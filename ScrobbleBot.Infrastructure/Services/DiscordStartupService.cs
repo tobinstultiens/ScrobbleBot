@@ -42,13 +42,19 @@ namespace ScrobbleBot.Infrastructure.Services
         /// <inheritdoc cref="IDiscordStartupService.StartAsync"/>
         public async Task StartAsync()
         {
+            Console.WriteLine("Discord Startup service starting...");
             if (string.IsNullOrWhiteSpace(_scrobbleBotConfiguration.DiscordApiKey))
                 throw new ArgumentException("Discord bot key was not set in the appsettings.json.", nameof(_scrobbleBotConfiguration.DiscordApiKey));
 
             await _discordSocketClient.LoginAsync(TokenType.Bot, _scrobbleBotConfiguration.DiscordApiKey);
+            Console.WriteLine("Logged in.");
+        
             await _discordSocketClient.StartAsync();
-
+            Console.WriteLine("Started Discord Socket Client.");
+            
             await _commandService.AddModulesAsync(Assembly.GetEntryAssembly(), _serviceProvider);
+            Console.WriteLine("Added modules.");
+            Console.WriteLine("Discord Startup service started!");
         }
     }
 }

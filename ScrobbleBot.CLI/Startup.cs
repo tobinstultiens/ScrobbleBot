@@ -48,7 +48,7 @@ namespace ScrobbleBot.CLI
 
             List<Task> tasks = new List<Task>
             {
-                _genericServiceProvider.GetService<IDiscordStartupService>().StartAsync()
+                Task.Run(_genericServiceProvider.GetService<IDiscordStartupService>().StartAsync, cancellationToken)
                 // TODO: Add tasks for initialization.
             };
             

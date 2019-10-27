@@ -50,6 +50,7 @@ namespace ScrobbleBot.Mapping
         public static IServiceCollection AddApplicationServices(this IServiceCollection serviceCollection, IConfiguration configuration)
         {
             serviceCollection.AddSingleton<ILastFmService, LastFmService>();
+            serviceCollection.AddSingleton<IDiscordStartupService, DiscordStartupService>();
             serviceCollection.AddSingleton(new DiscordSocketClient(new DiscordSocketConfig
             {
                 LogLevel = LogSeverity.Verbose,
