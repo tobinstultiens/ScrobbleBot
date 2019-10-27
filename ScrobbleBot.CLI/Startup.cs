@@ -1,10 +1,11 @@
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using ScrobbleBot.Application.Interfaces;
+using ScrobbleBot.Mapping;
 using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using ScrobbleBot.Mapping;
 
 namespace ScrobbleBot.CLI
 {
@@ -41,11 +42,13 @@ namespace ScrobbleBot.CLI
                 throw new ArgumentNullException(nameof(configuration));
 
             _genericServiceProvider = new ServiceCollection()
+                .AddApplicationServices(configuration)
                 .BuildServiceProvider()
                 .ToGenericServiceProvider();
 
             List<Task> tasks = new List<Task>
             {
+                _genericServiceProvider.GetService<IDiscordStartupService>().StartAsync()
                 // TODO: Add tasks for initialization.
             };
             

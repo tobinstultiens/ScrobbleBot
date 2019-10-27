@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFramework>netcoreapp3.0</TargetFramework>
@@ -6,6 +6,10 @@
 
     <ItemGroup>
       <PackageReference Include="Discord.Net" Version="2.1.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\ScrobbleBot.Domain\ScrobbleBot.Domain.csproj" />
     </ItemGroup>
 
 </Project>

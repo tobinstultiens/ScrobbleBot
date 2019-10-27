@@ -65,10 +65,13 @@ namespace ScrobbleBot.CLI
         private async Task RunAsync(CancellationToken cancellationToken)
         {
             IConfiguration configuration;
-            // TODO: Create ConfigurationLoader
+            
             try
             {
-                configuration = null;
+                var builder = new ConfigurationBuilder()
+                    .SetBasePath(Environment.CurrentDirectory)
+                    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+                configuration = builder.Build();
             }
             catch (Exception)
             {
