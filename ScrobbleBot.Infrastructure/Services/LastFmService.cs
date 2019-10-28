@@ -40,12 +40,12 @@ namespace ScrobbleBot.Infrastructure.Services
             }
         }
 
-        /// <inheritdoc cref="ILastFmService.GetArtistInfoAsync" />
+        /// <inheritdoc cref="ILastFmService.GetArtistInfoAsync(string)" />
         public async Task<ArtistProfile> GetArtistInfoAsync(string artistName)
         {
             using (HttpClient httpClient = CreateHttpClient())
             {
-                string json = await httpClient.GetStringAsync(CreateUri("artist.getinfo", "user", artistName));
+                string json = await httpClient.GetStringAsync(CreateUri("artist.getinfo", "artist", artistName));
                 ArtistProfile artistProfile = JsonSerializer.Deserialize<ArtistProfile>(json);
                 return artistProfile;
             }
