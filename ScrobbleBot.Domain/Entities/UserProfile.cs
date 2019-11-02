@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Collections.Generic;
 
 namespace ScrobbleBot.Domain.Entities
 {
@@ -7,11 +7,6 @@ namespace ScrobbleBot.Domain.Entities
     /// </summary>
     public class UserProfile
     {
-        /// <summary>
-        /// Gets and sets the Id.
-        /// </summary>
-        public double Id { get; set; }
-
         /// <summary>
         /// Gets and sets the Name.
         /// </summary>
@@ -28,9 +23,9 @@ namespace ScrobbleBot.Domain.Entities
         public string Url { get; set; }
 
         /// <summary>
-        /// Gets and sets the Image.
+        /// Gets and sets the list of Images.
         /// </summary>
-        public string Image { get; set; }
+        public List<Image> Image { get; set; }
 
         /// <summary>
         /// Gets and sets the Country.
@@ -40,7 +35,7 @@ namespace ScrobbleBot.Domain.Entities
         /// <summary>
         /// Gets and sets the Age.
         /// </summary>
-        public int Age { get; set; }
+        public string Age { get; set; }
 
         /// <summary>
         /// Gets and sets the Gender.
@@ -50,26 +45,48 @@ namespace ScrobbleBot.Domain.Entities
         /// <summary>
         /// Gets and sets the Subscriber.
         /// </summary>
-        public double Subscriber { get; set; }
+        public string Subscriber { get; set; }
 
         /// <summary>
         /// Gets and sets the PlayCount.
         /// </summary>
-        public double PlayCount { get; set; }
+        public string PlayCount { get; set; }
 
         /// <summary>
         /// Gets and sets the Playlist.
         /// </summary>
-        public int Playlist { get; set; }
+        public string Playlist { get; set; }
 
         /// <summary>
         /// Gets and sets the Bootstrap.
         /// </summary>
-        public int Bootstrap { get; set; }
+        public string Bootstrap { get; set; }
 
         /// <summary>
         /// Gets and sets the Registered.
         /// </summary>
-        public DateTime Registered { get; set; }
+        public Registered Registered { get; set; }
+    }
+
+    /// <summary>
+    /// Represent the <see cref="UserProfileRoot"/> class.
+    /// </summary>
+    public class UserProfileRoot
+    {
+        /// <summary>
+        /// Gets and sets the user profile.
+        /// </summary>
+        public UserProfile User { get; set; }
+    }
+
+    /// <summary>
+    /// Represents the <see cref="Registered"/> class.
+    /// </summary>
+    public class Registered
+    {
+        /// <summary>
+        /// Gets and sets the unix time.
+        /// </summary>
+        public string UnixTime { get; set; }
     }
 }

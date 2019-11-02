@@ -1,14 +1,11 @@
 ﻿using Discord.Commands;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
 using ScrobbleBot.Application.Interfaces;
 using ScrobbleBot.Domain.Entities;
+using System.Threading.Tasks;
 
 namespace ScrobbleBot.Infrastructure.Modules
 {
-    [Group("info")]
+    [Name("LastFm")]
     public class LastFmModule : ModuleBase<SocketCommandContext>
     {
         private readonly ILastFmService _lastFmService;
@@ -22,7 +19,7 @@ namespace ScrobbleBot.Infrastructure.Modules
         public async Task GetUserProfileCommand(string profileName)
         {
             UserProfile userProfile = await _lastFmService.GetProfileInfoAsync(profileName);
-            await ReplyAsync(userProfile.Name + " " + userProfile.Image);
+            await ReplyAsync($"[{userProfile.Name}] {userProfile.Url}");
         }
     }
 }

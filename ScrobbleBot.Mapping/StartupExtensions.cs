@@ -1,4 +1,3 @@
-using System;
 using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
@@ -6,8 +5,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ScrobbleBot.Application;
 using ScrobbleBot.Application.Interfaces;
-using ScrobbleBot.Infrastructure.Modules;
+using ScrobbleBot.Infrastructure;
 using ScrobbleBot.Infrastructure.Services;
+using System;
 
 namespace ScrobbleBot.Mapping
 {
@@ -50,12 +50,14 @@ namespace ScrobbleBot.Mapping
         /// <returns>The <see cref="IServiceCollection"/>.</returns>
         public static IServiceCollection AddApplicationServices(this IServiceCollection serviceCollection, IConfiguration configuration)
         {
+            serviceCollection.AddOptions();
+            serviceCollection.Configure<ScrobbleBotConfiguration>(configuration.Bind);
             serviceCollection.AddSingleton<ILastFmService, LastFmService>();
-            serviceCollection.AddSingleton<IDiscordStartupService, DiscordStartupService>();
-            serviceCollection.AddSingleton<LastFmModule>(provider =>
+            serviceCollection.AddHttpClient<ILastFmService, LastFmService>(client =>
             {
-                return new LastFmModule(provider.GetService<ILastFmService>());
+                client.BaseAddress = new Uri("https://ws.audioscrobbler.com/2.0/");
             });
+            serviceCollection.AddSingleton<IDiscordStartupService, DiscordStartupService>();
             serviceCollection.AddSingleton(new DiscordSocketClient(new DiscordSocketConfig
             {
                 LogLevel = LogSeverity.Verbose,
@@ -66,8 +68,7 @@ namespace ScrobbleBot.Mapping
                 LogLevel = LogSeverity.Verbose,
                 DefaultRunMode = RunMode.Async
             }));
-            serviceCollection.AddOptions();
-            serviceCollection.Configure<ScrobbleBotConfiguration>(configuration.Bind);
+            serviceCollection.AddSingleton<ICommandHandler, CommandHandler>();
             return serviceCollection;
         }
     }

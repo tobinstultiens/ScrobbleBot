@@ -42,10 +42,13 @@ namespace ScrobbleBot.CLI
                 throw new ArgumentNullException(nameof(configuration));
 
             _genericServiceProvider = new ServiceCollection()
-                .AddApplicationServices(configuration)
-                .BuildServiceProvider()
-                .ToGenericServiceProvider();
-
+            .AddApplicationServices(configuration)
+            .BuildServiceProvider()
+            .ToGenericServiceProvider();
+        
+            // NOTE: Start up the command handler first!
+            _genericServiceProvider.GetRequiredService<ICommandHandler>();
+            
             List<Task> tasks = new List<Task>
             {
                 Task.Run(_genericServiceProvider.GetService<IDiscordStartupService>().StartAsync, cancellationToken)
