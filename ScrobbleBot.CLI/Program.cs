@@ -68,7 +68,7 @@ namespace ScrobbleBot.CLI
             
             try
             {
-                var builder = new ConfigurationBuilder()
+                IConfigurationBuilder builder = new ConfigurationBuilder()
                     .SetBasePath(Environment.CurrentDirectory)
                     .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
                 configuration = builder.Build();

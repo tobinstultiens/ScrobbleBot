@@ -1,4 +1,6 @@
-﻿namespace ScrobbleBot.Domain.Entities
+﻿using System.Text.Json.Serialization;
+
+namespace ScrobbleBot.Domain.Entities
 {
     /// <summary>
     /// Represents the <see cref="ArtistProfile"/> class.
@@ -112,6 +114,7 @@
         /// <summary>
         /// Gets and sets the Text.
         /// </summary>
+        [JsonPropertyName("#text")]
         public string Text { get; set; }
 
         /// <summary>

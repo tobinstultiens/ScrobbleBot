@@ -21,12 +21,12 @@ namespace ScrobbleBot.Infrastructure.Services
         private readonly ScrobbleBotConfiguration _scrobbleBotConfiguration;
 
         /// <summary>
-        /// Starts the constructor.
+        /// Initializes a new instance of the <see cref="DiscordStartupService"/> class.
         /// </summary>
         /// <param name="options">The scrobble bot configuration options.</param>
-        /// <param name="discordSocketClient">The discord socket client</param>
-        /// <param name="commandService">The command service</param>
-        /// <param name="serviceProvider">The service provider</param>
+        /// <param name="discordSocketClient">The discord socket client.</param>
+        /// <param name="commandService">The command service.</param>
+        /// <param name="serviceProvider">The service provider.</param>
         public DiscordStartupService(
             IOptions<ScrobbleBotConfiguration> options,
             DiscordSocketClient discordSocketClient,
@@ -51,8 +51,8 @@ namespace ScrobbleBot.Infrastructure.Services
         
             await _discordSocketClient.StartAsync();
             Console.WriteLine("Started Discord Socket Client.");
-            
-            await _commandService.AddModulesAsync(Assembly.GetEntryAssembly(), _serviceProvider);
+
+            await _commandService.AddModulesAsync(Assembly.GetAssembly(typeof(DiscordStartupService)), _serviceProvider);
             Console.WriteLine("Added modules.");
             Console.WriteLine("Discord Startup service started!");
         }

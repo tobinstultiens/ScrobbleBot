@@ -14,5 +14,10 @@
         /// The discord api key.
         /// </summary>
         public string DiscordApiKey { get; set; }
+
+        /// <summary>
+        /// The prefix.
+        /// </summary>
+        public string Prefix { get; set; }
     }
 }

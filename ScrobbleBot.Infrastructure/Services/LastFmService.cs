@@ -1,12 +1,12 @@
-﻿using ScrobbleBot.Application.Interfaces;
+﻿using Microsoft.Extensions.Options;
+using ScrobbleBot.Application;
+using ScrobbleBot.Application.Interfaces;
 using ScrobbleBot.Domain.Entities;
 using System;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Options;
-using ScrobbleBot.Application;
 
 namespace ScrobbleBot.Infrastructure.Services
 {
@@ -15,49 +15,42 @@ namespace ScrobbleBot.Infrastructure.Services
     /// </summary>
     public class LastFmService : ILastFmService
     {
-        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly HttpClient _httpClient;
         private readonly ScrobbleBotConfiguration _scrobbleBotConfiguration;
+        private readonly JsonSerializerOptions _jsonSerializerOptions;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LastFmService"/> class.
         /// </summary>
-        /// <param name="httpClientFactory">The http client factory.</param>
+        /// <param name="httpClient">The http client.</param>
         /// <param name="options">The scrobblebot configurations options.</param>
-        public LastFmService(IHttpClientFactory httpClientFactory, IOptions<ScrobbleBotConfiguration> options)
+        public LastFmService(HttpClient httpClient, IOptions<ScrobbleBotConfiguration> options)
         {
-            _httpClientFactory = httpClientFactory;
+            _httpClient = httpClient;
             _scrobbleBotConfiguration = options.Value;
+            _jsonSerializerOptions = new JsonSerializerOptions()
+            {
+                PropertyNameCaseInsensitive = true
+            };
         }
 
         /// <inheritdoc cref="ILastFmService.GetProfileInfoAsync(string)"/>
         public async Task<UserProfile> GetProfileInfoAsync(string profileName)
         {
-            using (HttpClient httpClient = CreateHttpClient())
-            {
-                string json = await httpClient.GetStringAsync(CreateUri("user.getinfo", "user", profileName));
-                UserProfile userProfile = JsonSerializer.Deserialize<UserProfile>(json);
-                return userProfile;
-            }
+            string json = await _httpClient.GetStringAsync(CreatePath("user.getinfo", "user", profileName));
+            UserProfileRoot userProfile = JsonSerializer.Deserialize<UserProfileRoot>(json, _jsonSerializerOptions);
+            return userProfile.User;
         }
 
         /// <inheritdoc cref="ILastFmService.GetArtistInfoAsync(string)" />
         public async Task<ArtistProfile> GetArtistInfoAsync(string artistName)
         {
-            using (HttpClient httpClient = CreateHttpClient())
-            {
-                string json = await httpClient.GetStringAsync(CreateUri("artist.getinfo", "artist", artistName));
-                ArtistProfile artistProfile = JsonSerializer.Deserialize<ArtistProfile>(json);
-                return artistProfile;
-            }
+            string json = await _httpClient.GetStringAsync(CreatePath("artist.getinfo", "artist", artistName));
+            ArtistProfile artistProfile = JsonSerializer.Deserialize<ArtistProfile>(json, _jsonSerializerOptions);
+            return artistProfile;
         }
 
-        private HttpClient CreateHttpClient()
-        {
-            HttpClient client = _httpClientFactory.CreateClient();
-            client.BaseAddress = new Uri("https://ws.audioscrobbler.com/2.0/");
-            return client;
-        }
-        private Uri CreateUri(string method, params string[] parameters)
+        private string CreatePath(string method, params string[] parameters)
         {
             if (parameters.Length % 2 != 0)
                 throw new ArgumentOutOfRangeException(nameof(parameters));
@@ -71,7 +64,7 @@ namespace ScrobbleBot.Infrastructure.Services
 
             stringBuilder.Append($"&api_key={_scrobbleBotConfiguration.LastFmApiKey}");
             stringBuilder.Append($"&format=json");
-            return new Uri(stringBuilder.ToString());
+            return stringBuilder.ToString();
         }
     }
 }
