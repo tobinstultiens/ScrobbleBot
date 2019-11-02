@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ScrobbleBot.Application;
 using ScrobbleBot.Application.Interfaces;
+using ScrobbleBot.Infrastructure.Modules;
 using ScrobbleBot.Infrastructure.Services;
 
 namespace ScrobbleBot.Mapping
@@ -51,6 +52,10 @@ namespace ScrobbleBot.Mapping
         {
             serviceCollection.AddSingleton<ILastFmService, LastFmService>();
             serviceCollection.AddSingleton<IDiscordStartupService, DiscordStartupService>();
+            serviceCollection.AddSingleton<LastFmModule>(provider =>
+            {
+                return new LastFmModule(provider.GetService<ILastFmService>());
+            });
             serviceCollection.AddSingleton(new DiscordSocketClient(new DiscordSocketConfig
             {
                 LogLevel = LogSeverity.Verbose,
