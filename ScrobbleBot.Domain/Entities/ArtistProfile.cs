@@ -1,7 +1,19 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace ScrobbleBot.Domain.Entities
 {
+    /// <summary>
+    /// Represents the <see cref="ArtistProfileRoot"/> class.
+    /// </summary>
+    public class ArtistProfileRoot
+    {
+        /// <summary>
+        /// Gets and sets the Artist Profile.
+        /// </summary>
+        public ArtistProfile Artist { get; set; }
+    }
+
     /// <summary>
     /// Represents the <see cref="ArtistProfile"/> class.
     /// </summary>
@@ -25,7 +37,7 @@ namespace ScrobbleBot.Domain.Entities
         /// <summary>
         /// Gets and sets the Image.
         /// </summary>
-        public Image[] Image { get; set; }
+        public List<Image> Image { get; set; }
 
         /// <summary>
         /// Gets and sets the Streamable.
@@ -82,7 +94,7 @@ namespace ScrobbleBot.Domain.Entities
         /// <summary>
         /// Gets and sets the Artist.
         /// </summary>
-        public Artist[] Artist { get; set; }
+        public List<Artist> Artist { get; set; }
     }
 
     /// <summary>
@@ -103,7 +115,7 @@ namespace ScrobbleBot.Domain.Entities
         /// <summary>
         /// Gets and sets the Image.
         /// </summary>
-        public Image[] Image { get; set; }
+        public List<Image> Image { get; set; }
     }
 
     /// <summary>
@@ -131,7 +143,7 @@ namespace ScrobbleBot.Domain.Entities
         /// <summary>
         /// Gets and sets the Tag.
         /// </summary>
-        public Tag[] Tag { get; set; }
+        public List<Tag> Tag { get; set; }
     }
 
     /// <summary>
@@ -195,6 +207,7 @@ namespace ScrobbleBot.Domain.Entities
         /// <summary>
         /// Gets and sets the Text.
         /// </summary>
+        [JsonPropertyName("#text")]
         public string Text { get; set; }
 
         /// <summary>
