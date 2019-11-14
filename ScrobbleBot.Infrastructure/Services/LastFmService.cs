@@ -51,7 +51,7 @@ namespace ScrobbleBot.Infrastructure.Services
         }
 
         /// <inheritdoc cref="ILastFmService.GetRecentTracks(string)"/>
-        public async Task<RecentTracks> GetRecentTracks(string profileName)
+        public async Task<RecentTracks> GetRecentTracksAsync(string profileName)
         {
             string json = await _httpClient.GetStringAsync(CreatePath("user.getrecenttracks", "user", profileName));
             RecentTracksRoot recentTracks = JsonSerializer.Deserialize<RecentTracksRoot>(json, _jsonSerializerOptions);

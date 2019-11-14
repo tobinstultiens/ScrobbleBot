@@ -27,6 +27,6 @@ namespace ScrobbleBot.Application.Interfaces
         /// </summary>
         /// <param name="profileName">The profile name.</param>
         /// <returns>Returns an awaitable <see cref="Task{RecentTracks}"/>.</returns>
-        Task<RecentTracks> GetRecentTracks(string profileName);
+        Task<RecentTracks> GetRecentTracksAsync(string profileName);
     }
 }

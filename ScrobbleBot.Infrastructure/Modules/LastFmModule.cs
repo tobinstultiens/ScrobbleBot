@@ -26,9 +26,9 @@ namespace ScrobbleBot.Infrastructure.Modules
         /// Command to retrieve user profile information.
         /// </summary>
         /// <param name="profileName">The profile name.</param>
-        /// <returns></returns>
+        /// <returns>Returns an awaitable <see cref="Task"/>.</returns>
         [Command("user")]
-        public async Task GetUserProfileCommand(string profileName)
+        public async Task GetUserProfileCommandAsync(string profileName)
         {
             UserProfile userProfile = await _lastFmService.GetProfileInfoAsync(profileName);
             await ReplyAsync($"[{userProfile.Name}] {userProfile.Url}");
@@ -38,9 +38,9 @@ namespace ScrobbleBot.Infrastructure.Modules
         /// Command to retrieve the artist profile information.
         /// </summary>
         /// <param name="artistName">The artist name.</param>
-        /// <returns></returns>
+        /// <returns>Returns an awaitable <see cref="Task"/>.</returns>
         [Command("artist")]
-        public async Task GetArtistProfileCommand(string artistName)
+        public async Task GetArtistProfileCommandAsync(string artistName)
         {
             ArtistProfile artistProfile = await _lastFmService.GetArtistInfoAsync(artistName);
             await ReplyAsync($"[{artistProfile.Name}] {artistProfile.Bio.Summary}");
@@ -50,9 +50,9 @@ namespace ScrobbleBot.Infrastructure.Modules
         /// Command to retrieve recently listened to tracks.
         /// </summary>
         /// <param name="profileName">The profile name.</param>
-        /// <returns></returns>
+        /// <returns>Returns an awaitable <see cref="Task"/>.</returns>
         [Command("fm")]
-        public async Task GetRecentTracks(string profileName)
+        public async Task GetRecentTracksAsync(string profileName)
         {
             RecentTracks recentTracks = await _lastFmService.GetRecentTracks(profileName);
             await ReplyAsync($"[{recentTracks.Track[0].Artist.Text}] {recentTracks.Track[0].Name} {recentTracks.Track[0].Album.Text}");
