@@ -46,8 +46,16 @@ namespace ScrobbleBot.Infrastructure.Services
         public async Task<ArtistProfile> GetArtistInfoAsync(string artistName)
         {
             string json = await _httpClient.GetStringAsync(CreatePath("artist.getinfo", "artist", artistName));
-            ArtistProfile artistProfile = JsonSerializer.Deserialize<ArtistProfile>(json, _jsonSerializerOptions);
-            return artistProfile;
+            ArtistProfileRoot artistProfile = JsonSerializer.Deserialize<ArtistProfileRoot>(json, _jsonSerializerOptions);
+            return artistProfile.Artist;
+        }
+
+        /// <inheritdoc cref="ILastFmService.GetRecentTracks(string)"/>
+        public async Task<RecentTracks> GetRecentTracksAsync(string profileName)
+        {
+            string json = await _httpClient.GetStringAsync(CreatePath("user.getrecenttracks", "user", profileName));
+            RecentTracksRoot recentTracks = JsonSerializer.Deserialize<RecentTracksRoot>(json, _jsonSerializerOptions);
+            return recentTracks.RecentTracks;
         }
 
         private string CreatePath(string method, params string[] parameters)

@@ -19,7 +19,14 @@ namespace ScrobbleBot.Application.Interfaces
         /// Retrieves the profile information asynchronously.
         /// </summary>
         /// <param name="artistName">The artist name.</param>
-        /// <returns>Returns an awaitable <see cref="Task{ArtistProfile}"/>.</returns>
+        /// <returns>Returns an awaitable <see cref="Task{Artist}"/>.</returns>
         Task<ArtistProfile> GetArtistInfoAsync(string artistName);
+
+        /// <summary>
+        /// Retrieves the recently listened to tracks asynchronously.
+        /// </summary>
+        /// <param name="profileName">The profile name.</param>
+        /// <returns>Returns an awaitable <see cref="Task{RecentTracks}"/>.</returns>
+        Task<RecentTracks> GetRecentTracksAsync(string profileName);
     }
 }
