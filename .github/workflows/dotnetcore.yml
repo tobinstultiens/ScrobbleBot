@@ -24,10 +24,7 @@ jobs:
     needs: [build]
     runs-on: [ubuntu-latest]
     steps:
-      - name: Setup .NET Core
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: 3.0.100
+      - uses: actions/checkout@v1
       - name: Build with dotnet
         run: dotnet build --configuration Release
       - name: Test dotnet
