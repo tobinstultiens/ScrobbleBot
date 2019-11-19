@@ -25,7 +25,8 @@ jobs:
     runs-on: [ubuntu-latest]
     steps:
       - name: Test dotnet
-        run: dotnet test ScrobbleBot
+        run: cd ScrobbleBot/ |
+             dotnet test
   
   deploy:
     if: contains(github.ref, 'master')
