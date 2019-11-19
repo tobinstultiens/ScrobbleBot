@@ -28,6 +28,15 @@ jobs:
       - name: Test dotnet
         run: dotnet test ScrobbleBot.sln
   
+  codequality:
+    needs: [build]
+    runs-on: [ubuntu-latest]
+    steps:
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@v1.1
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+  
   deploy:
     if: contains(github.ref, 'master')
     needs: [test]
@@ -40,5 +49,5 @@ jobs:
         uses: azure/webapps-deploy@v1
         with: 
           app-name: Scrobblebot # Replace with your app name
-          publish-profile: $ # Define secret variable in repository settings as per action documentation
+          publish-profile: ${{ secrets.PUBLISH_PROFILE }} # Define secret variable in repository settings as per action documentation
           package: './dotnetcorewebapp' 
