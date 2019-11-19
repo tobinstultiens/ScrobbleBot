@@ -4,6 +4,7 @@ on:
   push:
     branches: 
       - master
+      - development
 
 jobs:
   build:
@@ -27,6 +28,7 @@ jobs:
         run: dotnet test
   
   deploy:
+    if: contains(github.ref, 'master')
     needs: [test]
     runs-on: [ubuntu-latest]
     steps:
