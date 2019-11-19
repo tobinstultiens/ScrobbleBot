@@ -19,19 +19,13 @@ jobs:
         dotnet-version: 3.0.100
     - name: Build with dotnet
       run: dotnet build --configuration Release
-  
-  test:
-    needs: [build]
-    runs-on: [ubuntu-latest]
-    steps:
-      - uses: actions/checkout@v1
-      - name: Test dotnet
-        run: dotnet test ScrobbleBot.sln
-  
+   
   codequality:
     needs: [build]
     runs-on: [ubuntu-latest]
     steps:
+      - name: Test dotnet
+        run: dotnet test
       - uses: actions/checkout@master
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@v1.1
@@ -41,7 +35,7 @@ jobs:
   
   deploy:
     if: contains(github.ref, 'master')
-    needs: [test]
+    needs: [codequality]
     runs-on: [ubuntu-latest]
     steps:
       - name: dotnet publish
