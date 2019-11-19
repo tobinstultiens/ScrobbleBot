@@ -50,7 +50,7 @@ namespace ScrobbleBot.Infrastructure.Services
             return artistProfile.Artist;
         }
 
-        /// <inheritdoc cref="ILastFmService.GetRecentTracks(string)"/>
+        /// <inheritdoc cref="ILastFmService.GetRecentTracksAsync(string)"/>
         public async Task<RecentTracks> GetRecentTracksAsync(string profileName)
         {
             string json = await _httpClient.GetStringAsync(CreatePath("user.getrecenttracks", "user", profileName));

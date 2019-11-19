@@ -54,7 +54,7 @@ namespace ScrobbleBot.Infrastructure.Modules
         [Command("fm")]
         public async Task GetRecentTracksAsync(string profileName)
         {
-            RecentTracks recentTracks = await _lastFmService.GetRecentTracks(profileName);
+            RecentTracks recentTracks = await _lastFmService.GetRecentTracksAsync(profileName);
             await ReplyAsync($"[{recentTracks.Track[0].Artist.Text}] {recentTracks.Track[0].Name} {recentTracks.Track[0].Album.Text}");
         }
     }
