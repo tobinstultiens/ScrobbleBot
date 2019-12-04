@@ -17,7 +17,7 @@ namespace ScrobbleBot.Tests
 
             // Act
             await service.GetProfileInfoAsync("");
-            
+
             // Assert
             mock.Verify(lastFmService => lastFmService.GetProfileInfoAsync(""), Times.Exactly(1));
         }
@@ -32,11 +32,11 @@ namespace ScrobbleBot.Tests
 
             // Act
             await service.GetArtistInfoAsync("");
-            
+
             // Assert
             mock.Verify(lastFmService => lastFmService.GetArtistInfoAsync(""), Times.Exactly(1));
         }
-        
+
         [Fact]
         public async Task GetRecentTracksAsyncTest()
         {
@@ -47,9 +47,24 @@ namespace ScrobbleBot.Tests
 
             // Act
             await service.GetRecentTracksAsync("");
-            
+
             // Assert
             mock.Verify(lastFmService => lastFmService.GetRecentTracksAsync(""), Times.Exactly(1));
+        }
+
+        [Fact]
+        public async Task GetWeeklyChartAsyncTest()
+        {
+            // Arrange
+            var mock = new Mock<ILastFmService>();
+            mock.Setup(lastFmService => lastFmService.GetWeeklyChartAsync(""));
+            ILastFmService service = mock.Object;
+
+            // Act
+            await service.GetWeeklyChartAsync("");
+
+            // Assert
+            mock.Verify(lastFmService => lastFmService.GetWeeklyChartAsync(""), Times.Exactly(1));
         }
     }
 }

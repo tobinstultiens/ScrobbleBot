@@ -58,6 +58,14 @@ namespace ScrobbleBot.Infrastructure.Services
             return recentTracks.RecentTracks;
         }
 
+        /// <inheritdoc cref="ILastFmService.GetWeeklyChartAsync(string)"/>
+        public async Task<Weeklychartlist> GetWeeklyChartAsync(string profileName)
+        {
+            string json = await _httpClient.GetStringAsync(CreatePath("user.getWeeklyChartList", "user", profileName));
+            WeeklyChart WeeklyChartRoots = JsonSerializer.Deserialize<WeeklyChart>(json, _jsonSerializerOptions);
+            return WeeklyChartRoots.Weeklychartlist;
+        }
+
         private string CreatePath(string method, params string[] parameters)
         {
             if (parameters.Length % 2 != 0)
