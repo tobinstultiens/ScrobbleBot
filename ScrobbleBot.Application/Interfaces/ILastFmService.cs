@@ -33,7 +33,7 @@ namespace ScrobbleBot.Application.Interfaces
         /// Retrieves the weekly chart asynchronously.
         /// </summary>
         /// <param name="profileName">The profile name.</param>
-        /// <returns>Returns an awaitable <see cref="Task{WeeklyChart}"/>.</returns>
+        /// <returns>Returns an awaitable <see cref="Task{Weeklychartlist}"/>.</returns>
         Task<Weeklychartlist> GetWeeklyChartAsync(string profileName);
     }
 }
