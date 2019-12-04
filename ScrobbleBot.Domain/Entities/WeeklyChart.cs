@@ -5,7 +5,7 @@ namespace ScrobbleBot.Domain.Entities
     /// <summary>
     /// Represent the <see cref="WeeklyChart"/> class.
     /// </summary>
-    public partial class WeeklyChart
+    public class WeeklyChart
     {
         /// <summary>
         /// Gets and sets the Weeklychartlist.
@@ -17,7 +17,7 @@ namespace ScrobbleBot.Domain.Entities
     /// <summary>
     /// Represent the <see cref="Weeklychartlist"/> class.
     /// </summary>
-    public partial class Weeklychartlist
+    public class Weeklychartlist
     {
         /// <summary>
         /// Gets and sets the Chart.
@@ -35,7 +35,7 @@ namespace ScrobbleBot.Domain.Entities
     /// <summary>
     /// Represent the <see cref="Chart"/> class.
     /// </summary>
-    public partial class Chart
+    public class Chart
     {
         /// <summary>
         /// Gets and sets the Text.
@@ -47,12 +47,12 @@ namespace ScrobbleBot.Domain.Entities
         /// Gets and sets the From.
         /// </summary>
         [JsonPropertyName("from")]
-        public long From { get; set; }
+        public string From { get; set; }
 
         /// <summary>
         /// Gets and sets the To.
         /// </summary>
         [JsonPropertyName("to")]
-        public long To { get; set; }
+        public string To { get; set; }
     }
 }
