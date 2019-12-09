@@ -54,8 +54,20 @@ namespace ScrobbleBot.Infrastructure.Modules
         [Command("fm")]
         public async Task GetRecentTracksAsync(string profileName)
         {
-            RecentTracks recentTracks = await _lastFmService.GetRecentTracks(profileName);
+            RecentTracks recentTracks = await _lastFmService.GetRecentTracksAsync(profileName);
             await ReplyAsync($"[{recentTracks.Track[0].Artist.Text}] {recentTracks.Track[0].Name} {recentTracks.Track[0].Album.Text}");
+        }
+
+        /// <summary>
+        /// Command to retrieve the weekly chart.
+        /// </summary>
+        /// <param name="profileName">The profile name.</param>
+        /// <returns>Returns an awaitable <see cref="Task"/>.</returns>
+        [Command("weeklychart")]
+        public async Task GetWeeklyChartAsync(string profileName)
+        {
+            Weeklychartlist weeklychartlist = await _lastFmService.GetWeeklyChartAsync(profileName);
+            await ReplyAsync($"{weeklychartlist.Chart}");
         }
     }
 }
