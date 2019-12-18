@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using Moq;
 using ScrobbleBot.Application.Interfaces;
+using ScrobbleBot.Infrastructure.Modules;
 using Xunit;
 
 namespace ScrobbleBot.Tests
@@ -28,10 +29,10 @@ namespace ScrobbleBot.Tests
             // Arrange
             var mock = new Mock<ILastFmService>();
             mock.Setup(lastFmService => lastFmService.GetArtistInfoAsync(""));
-            ILastFmService service = mock.Object;
+            LastFmModule service = new LastFmModule(mock.Object);
 
             // Act
-            await service.GetArtistInfoAsync("");
+            await service.GetArtistProfileCommandAsync("");
 
             // Assert
             mock.Verify(lastFmService => lastFmService.GetArtistInfoAsync(""), Times.Exactly(1));
