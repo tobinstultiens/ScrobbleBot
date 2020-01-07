@@ -1,7 +1,9 @@
-﻿using Discord.Commands;
+﻿using System.Collections.Immutable;
+using Discord.Commands;
 using ScrobbleBot.Application.Interfaces;
 using ScrobbleBot.Domain.Entities;
 using System.Threading.Tasks;
+using Discord;
 
 namespace ScrobbleBot.Infrastructure.Modules
 {
@@ -49,13 +51,25 @@ namespace ScrobbleBot.Infrastructure.Modules
         /// <summary>
         /// Command to retrieve recently listened to tracks.
         /// </summary>
+        /// <param name="user">The user profile.</param>
         /// <param name="profileName">The profile name.</param>
         /// <returns>Returns an awaitable <see cref="Task"/>.</returns>
         [Command("fm")]
-        public async Task GetRecentTracksAsync(string profileName)
+        public async Task GetRecentTracksAsync(string profileName = null)
         {
-            RecentTracks recentTracks = await _lastFmService.GetRecentTracksAsync(profileName);
-            await ReplyAsync($"[{recentTracks.Track[0].Artist.Text}] {recentTracks.Track[0].Name} {recentTracks.Track[0].Album.Text}");
+            RecentTracks recentTracks = await _lastFmService.GetRecentTracksAsync(profileName ?? Context.User.Username);
+            EmbedBuilder embedBuilder = new EmbedBuilder
+            {
+                Author = new EmbedAuthorBuilder
+                {
+                    Name = "Requested by " + Context.User.Username,
+                    IconUrl = Context.User.GetAvatarUrl(),
+                    Url = $"https://www.last.fm/user/{profileName ?? Context.User.Username}"
+                },
+                Description = $"By {recentTracks.Track[0].Artist.Text} | {recentTracks.Track[0].Album.Text}"
+            };
+            Embed embed = embedBuilder.Build();
+            await ReplyAsync(embed: embed);
         }
 
         /// <summary>
@@ -63,11 +77,11 @@ namespace ScrobbleBot.Infrastructure.Modules
         /// </summary>
         /// <param name="profileName">The profile name.</param>
         /// <returns>Returns an awaitable <see cref="Task"/>.</returns>
-        [Command("weeklychart")]
+        [Command("weeklyChart")]
         public async Task GetWeeklyChartAsync(string profileName)
         {
-            Weeklychartlist weeklychartlist = await _lastFmService.GetWeeklyChartAsync(profileName);
-            await ReplyAsync($"{weeklychartlist.Chart}");
+            Weeklychartlist weeklyChartList = await _lastFmService.GetWeeklyChartAsync(profileName);
+            await ReplyAsync($"{weeklyChartList.Chart}");
         }
     }
 }
