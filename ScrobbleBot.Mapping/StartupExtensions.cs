@@ -57,6 +57,11 @@ namespace ScrobbleBot.Mapping
             {
                 client.BaseAddress = new Uri("https://ws.audioscrobbler.com/2.0/");
             });
+            serviceCollection.AddSingleton<IUserService, UserService>();
+            serviceCollection.AddHttpClient<IUserService,UserService>(client =>
+            {
+                client.BaseAddress = new Uri(configuration.GetSection("ScrobblebotApi").Value);
+            });
             serviceCollection.AddSingleton<IDiscordStartupService, DiscordStartupService>();
             serviceCollection.AddSingleton(new DiscordSocketClient(new DiscordSocketConfig
             {
