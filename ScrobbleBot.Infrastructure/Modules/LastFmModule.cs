@@ -1,4 +1,5 @@
-﻿using System.Collections.Immutable;
+﻿using System;
+using System.Collections.Immutable;
 using Discord.Commands;
 using ScrobbleBot.Application.Interfaces;
 using ScrobbleBot.Domain.Entities;
@@ -14,14 +15,17 @@ namespace ScrobbleBot.Infrastructure.Modules
     public class LastFmModule : ModuleBase<SocketCommandContext>
     {
         private readonly ILastFmService _lastFmService;
+        private readonly ICommandWebsocketService _commandWebsocketService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LastFmModule"/> class.
         /// </summary>
         /// <param name="lastFmService">The lastfm service.</param>
-        public LastFmModule(ILastFmService lastFmService)
+        /// <param name="commandWebsocketService">The Command websocket connection.</param>
+        public LastFmModule(ILastFmService lastFmService, ICommandWebsocketService commandWebsocketService)
         {
             _lastFmService = lastFmService;
+            _commandWebsocketService = commandWebsocketService;
         }
 
         /// <summary>
@@ -82,6 +86,20 @@ namespace ScrobbleBot.Infrastructure.Modules
         {
             Weeklychartlist weeklyChartList = await _lastFmService.GetWeeklyChartAsync(profileName);
             await ReplyAsync($"{weeklyChartList.Chart}");
+        }
+
+        [Command("ws")]
+        public async Task SendMessageToWebsocket(string message)
+        {
+            try
+            {
+                _commandWebsocketService.SendCommandAsync(message, Context.User.Username);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+            await ReplyAsync(message);
         }
     }
 }

@@ -62,6 +62,7 @@ namespace ScrobbleBot.Mapping
             {
                 client.BaseAddress = new Uri(configuration.GetSection("ScrobblebotApi").Value);
             });
+            serviceCollection.AddSingleton<ICommandWebsocketService, CommandWebsocketService>();
             serviceCollection.AddSingleton<IDiscordStartupService, DiscordStartupService>();
             serviceCollection.AddSingleton(new DiscordSocketClient(new DiscordSocketConfig
             {
