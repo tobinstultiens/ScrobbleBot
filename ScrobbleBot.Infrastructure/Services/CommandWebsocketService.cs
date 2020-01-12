@@ -1,16 +1,8 @@
 ﻿using System;
-using System.Linq;
-using System.Net;
-//using System.Net.WebSockets;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using Newtonsoft.Json;
 using ScrobbleBot.Application.Interfaces;
 using ScrobbleBot.Domain.Stomp;
 using WebSocketSharp;
-using Stomp.Net;
-using Stomp.Net.Stomp.Commands;
 
 namespace ScrobbleBot.Infrastructure.Services
 {
@@ -32,7 +24,6 @@ namespace ScrobbleBot.Infrastructure.Services
             {
                 ws.OnMessage += ws_OnMessage;
                 ws.OnOpen += ws_OnOpen;
-                ws.OnError += ws_OnError;
                 ws.Connect();
 
                 StompMessageSerializer serializer = new StompMessageSerializer();
@@ -42,7 +33,7 @@ namespace ScrobbleBot.Infrastructure.Services
                 connect["host"] = "";
                 ws.Send(serializer.Serialize(connect));
 
-                var content = new Content() { Username = username, Message = command, id = Guid.NewGuid()};
+                var content = new Content() { Username = username, Message = command, id = Guid.NewGuid() };
                 var broad = new StompMessage("SEND", JsonConvert.SerializeObject(content));
                 broad["content-type"] = "application/json";
                 broad["destination"] = "/client/message";
