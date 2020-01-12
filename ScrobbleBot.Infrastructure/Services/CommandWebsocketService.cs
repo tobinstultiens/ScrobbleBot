@@ -12,7 +12,7 @@ namespace ScrobbleBot.Infrastructure.Services
     /// </summary>
     public class CommandWebsocketService : ICommandWebsocketService
     {
-        /// <inheritdoc cref="ICommandWebsocketService.SendCommandAsync(string)"/>
+        /// <inheritdoc cref="ICommandWebsocketService.SendCommandAsync(string, string)"/>
         public void SendCommandAsync(string command, string username)
         {
             Connect(command, username);
@@ -20,7 +20,7 @@ namespace ScrobbleBot.Infrastructure.Services
 
         private void Connect(string command, string username)
         {
-            using (var ws = new WebSocket("ws://localhost:8080/gs-guide-websocket"))
+            using (var ws = new WebSocket("ws://127.0.0.1:8080/gs-guide-websocket"))
             {
                 ws.OnMessage += ws_OnMessage;
                 ws.OnOpen += ws_OnOpen;
