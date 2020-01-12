@@ -34,7 +34,6 @@ namespace ScrobbleBot.Infrastructure.Services
                 ws.OnOpen += ws_OnOpen;
                 ws.OnError += ws_OnError;
                 ws.Connect();
-                Thread.Sleep(1000);
 
                 StompMessageSerializer serializer = new StompMessageSerializer();
 
@@ -43,8 +42,7 @@ namespace ScrobbleBot.Infrastructure.Services
                 connect["host"] = "";
                 ws.Send(serializer.Serialize(connect));
 
-                Thread.Sleep(1000);
-                var content = new Content() { Username = username, Message = command };
+                var content = new Content() { Username = username, Message = command, id = Guid.NewGuid()};
                 var broad = new StompMessage("SEND", JsonConvert.SerializeObject(content));
                 broad["content-type"] = "application/json";
                 broad["destination"] = "/client/message";
@@ -74,6 +72,7 @@ namespace ScrobbleBot.Infrastructure.Services
 
         public class Content
         {
+            public Guid id { get; set; }
             public string Username { get; set; }
             public string Message { get; set; }
         }

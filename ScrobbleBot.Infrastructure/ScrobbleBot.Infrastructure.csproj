@@ -16,4 +16,8 @@
     <ProjectReference Include="..\ScrobbleBot.Application\ScrobbleBot.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="NewFolder\" />
+  </ItemGroup>
+
 </Project>
