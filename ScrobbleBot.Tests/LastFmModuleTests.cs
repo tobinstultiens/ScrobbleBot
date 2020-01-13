@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using Moq;
 using ScrobbleBot.Application.Interfaces;
+using ScrobbleBot.Infrastructure.Modules;
 using Xunit;
 
 namespace ScrobbleBot.Tests
@@ -12,14 +13,16 @@ namespace ScrobbleBot.Tests
         {
             // Arrange
             var mock = new Mock<ILastFmService>();
-            mock.Setup(lastFmService => lastFmService.GetProfileInfoAsync(""));
-            ILastFmService service = mock.Object;
+            mock.Setup(lastFmService => lastFmService.GetProfileInfoAsync("kick1999"));
+            var mock2 = new Mock<ICommandWebsocketService>();
+            mock2.Setup(lastFmService => lastFmService.SendCommandAsync("kick1999",""));
+            LastFmModule service = new LastFmModule(mock.Object, mock2.Object);
 
             // Act
-            await service.GetProfileInfoAsync("");
+            await service.GetUserProfileCommandAsync("kick1999");
 
             // Assert
-            mock.Verify(lastFmService => lastFmService.GetProfileInfoAsync(""), Times.Exactly(1));
+            mock.Verify(lastFmService => lastFmService.GetProfileInfoAsync("kick1999"), Times.Exactly(1));
         }
 
         [Fact]
