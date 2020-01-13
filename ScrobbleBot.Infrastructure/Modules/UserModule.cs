@@ -28,10 +28,24 @@ namespace ScrobbleBot.Infrastructure.Modules
         [Command("setProfile")]
         public async Task SetProfile(string profileName)
         {
-            var result = await _userService.SetUserAsync(new RestUser { LastFmUsername = profileName, DiscordUsername = Context.User.Username });
+            var result = await _userService.SetUserAsync(new RestUser { lastFmUsername = profileName, discordUsername = Context.User.Username });
             if (result)
             {
                 await ReplyAsync("The profile has been set");
+            }
+            else
+            {
+                await ReplyAsync("Error the profile has not been set");
+            }
+        }
+
+        [Command("getProfile")]
+        public async Task GetProfile()
+        {
+            var result = await _userService.GetUserAsync(Context.User.Username);
+            if (result != null)
+            {
+                await ReplyAsync("This is your last fm username: " + result.discordUsername);
             }
             else
             {

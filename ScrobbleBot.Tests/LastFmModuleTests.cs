@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using Moq;
 using ScrobbleBot.Application.Interfaces;
+using ScrobbleBot.Domain.Entities;
 using ScrobbleBot.Infrastructure.Modules;
 using Xunit;
 
@@ -13,9 +14,9 @@ namespace ScrobbleBot.Tests
         {
             // Arrange
             var mock = new Mock<ILastFmService>();
-            mock.Setup(lastFmService => lastFmService.GetProfileInfoAsync("kick1999"));
+            mock.Setup(lastFmService => lastFmService.GetProfileInfoAsync("kick1999")).ReturnsAsync(new UserProfile());
             var mock2 = new Mock<ICommandWebsocketService>();
-            mock2.Setup(lastFmService => lastFmService.SendCommandAsync("kick1999",""));
+            mock2.Setup(lastFmService => lastFmService.SendCommandAsync("kick1999", ""));
             LastFmModule service = new LastFmModule(mock.Object, mock2.Object);
 
             // Act
@@ -30,11 +31,13 @@ namespace ScrobbleBot.Tests
         {
             // Arrange
             var mock = new Mock<ILastFmService>();
-            mock.Setup(lastFmService => lastFmService.GetArtistInfoAsync(""));
-            ILastFmService service = mock.Object;
+            mock.Setup(lastFmService => lastFmService.GetProfileInfoAsync("kick1999")).ReturnsAsync(new UserProfile());
+            var mock2 = new Mock<ICommandWebsocketService>();
+            mock2.Setup(lastFmService => lastFmService.SendCommandAsync("kick1999", ""));
+            LastFmModule service = new LastFmModule(mock.Object, mock2.Object);
 
             // Act
-            await service.GetArtistInfoAsync("");
+            await service.GetArtistProfileCommandAsync("");
 
             // Assert
             mock.Verify(lastFmService => lastFmService.GetArtistInfoAsync(""), Times.Exactly(1));
@@ -45,8 +48,10 @@ namespace ScrobbleBot.Tests
         {
             // Arrange
             var mock = new Mock<ILastFmService>();
-            mock.Setup(lastFmService => lastFmService.GetRecentTracksAsync(""));
-            ILastFmService service = mock.Object;
+            mock.Setup(lastFmService => lastFmService.GetProfileInfoAsync("kick1999")).ReturnsAsync(new UserProfile());
+            var mock2 = new Mock<ICommandWebsocketService>();
+            mock2.Setup(lastFmService => lastFmService.SendCommandAsync("kick1999", ""));
+            LastFmModule service = new LastFmModule(mock.Object, mock2.Object);
 
             // Act
             await service.GetRecentTracksAsync("");
@@ -60,8 +65,10 @@ namespace ScrobbleBot.Tests
         {
             // Arrange
             var mock = new Mock<ILastFmService>();
-            mock.Setup(lastFmService => lastFmService.GetWeeklyChartAsync(""));
-            ILastFmService service = mock.Object;
+            mock.Setup(lastFmService => lastFmService.GetProfileInfoAsync("kick1999")).ReturnsAsync(new UserProfile());
+            var mock2 = new Mock<ICommandWebsocketService>();
+            mock2.Setup(lastFmService => lastFmService.SendCommandAsync("kick1999", ""));
+            LastFmModule service = new LastFmModule(mock.Object, mock2.Object);
 
             // Act
             await service.GetWeeklyChartAsync("");

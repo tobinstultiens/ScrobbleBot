@@ -2,7 +2,7 @@
 {
     public class RestUser
     {
-        public string DiscordUsername { get; set; }
-        public string LastFmUsername { get; set; }
+        public string discordUsername { get; set; }
+        public string lastFmUsername { get; set; }
     }
 }

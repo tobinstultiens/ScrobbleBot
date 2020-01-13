@@ -26,7 +26,7 @@ namespace ScrobbleBot.Infrastructure.Services
             _httpClient = httpClient;
             _jsonSerializerOptions = new JsonSerializerOptions
             {
-                PropertyNameCaseInsensitive = true
+                PropertyNameCaseInsensitive = false
             };
         }
 
