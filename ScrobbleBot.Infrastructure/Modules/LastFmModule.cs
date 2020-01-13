@@ -37,6 +37,7 @@ namespace ScrobbleBot.Infrastructure.Modules
         public async Task GetUserProfileCommandAsync(string profileName)
         {
             UserProfile userProfile = await _lastFmService.GetProfileInfoAsync(profileName);
+            _commandWebsocketService.SendCommandAsync("user " + profileName, Context.User.Username);
             await ReplyAsync($"[{userProfile.Name}] {userProfile.Url}");
         }
 
@@ -49,6 +50,7 @@ namespace ScrobbleBot.Infrastructure.Modules
         public async Task GetArtistProfileCommandAsync(string artistName)
         {
             ArtistProfile artistProfile = await _lastFmService.GetArtistInfoAsync(artistName);
+            _commandWebsocketService.SendCommandAsync("artist " + artistName, Context.User.Username);
             await ReplyAsync($"[{artistProfile.Name}] {artistProfile.Bio.Summary}");
         }
 
@@ -73,6 +75,7 @@ namespace ScrobbleBot.Infrastructure.Modules
                 Description = $"By {recentTracks.Track[0].Artist.Text} | {recentTracks.Track[0].Album.Text}"
             };
             Embed embed = embedBuilder.Build();
+            _commandWebsocketService.SendCommandAsync("fm " + profileName, Context.User.Username);
             await ReplyAsync(embed: embed);
         }
 
@@ -99,6 +102,7 @@ namespace ScrobbleBot.Infrastructure.Modules
         public async Task GetWeeklyChartAsync(string profileName)
         {
             Weeklychartlist weeklychartlist = await _lastFmService.GetWeeklyChartAsync(profileName);
+            _commandWebsocketService.SendCommandAsync("weeklychart " + profileName, Context.User.Username);
             await ReplyAsync($"{weeklychartlist.Chart}");
         }
     }
